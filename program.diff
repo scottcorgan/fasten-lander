@@ -1,0 +1,147 @@
+diff --git a/v0.10.21/lib/node_modules/divshot-cli/./lib/program.js b/Users/jonathankim/Sites/github/divshot-cli/lib/program.js
+index 7a43ddc..a7798b0 100644
+--- a/v0.10.21/lib/node_modules/divshot-cli/./lib/program.js
++++ b/Users/jonathankim/Sites/github/divshot-cli/lib/program.js
+@@ -2,17 +2,17 @@ var program = require('commander');
+ var feedback = require('feedback');
+ 
+ module.exports = function (api, user, cwd) {
+-
++  
+   program.Command.prototype.example = function (str) {
+     if (!str) return this._example || '';
+-
++    
+     this._example = str;
+     return this;
+   };
+ 
+   program.Command.prototype.trigger = function (args) {
+     args || (args = []);
+-
++    
+     this.parent.emit(this._name, args);
+     return this;
+   };
+@@ -20,32 +20,28 @@ module.exports = function (api, user, cwd) {
+   program.Command.prototype.handler = function (callback) {
+     var self = this;
+     callback || (callback = function () {});
+-
++    
+     this.action(function () {
+-      if (this.token) {
+-        api.setToken(this.token);
+-        user.set('token', this.token);
+-      }
++      if (this.token) api.setToken(this.token);
+       if (this.rawArgs.indexOf('--no-color') > -1) feedback.color = false;
+-
+-      feedback.error(this.token);
++      
+       if (self._withAuth && !user.authenticated()) {
+         return feedback.error('You must be logged in to do that.');
+       }
+-
++      
+       if (self._withConfig) {
+         self.config = cwd.getConfig();
+         if (!self.config || !self.config.name) return feedback.error('Current directory is not a ' + 'Divshot.io'.blue + ' app');
+       }
+-
++      
+       if (this.app) {
+         self.config = self.config || {};
+         self.config.name = this.app;
+       }
+-
++      
+       callback.apply(self, arguments);
+     });
+-
++    
+     return this;
+   };
+ 
+@@ -58,6 +54,6 @@ module.exports = function (api, user, cwd) {
+     this._withConfig = true;
+     return this;
+   };
+-
++  
+   return program;
+ };
+\ No newline at end of file
+diff --git a/v0.10.21/lib/node_modules/divshot-cli/./lib/program.js b/Users/jonathankim/Sites/github/divshot-cli/lib/program.js
+index a7f05d0..a7798b0 100644
+--- a/v0.10.21/lib/node_modules/divshot-cli/./lib/program.js
++++ b/Users/jonathankim/Sites/github/divshot-cli/lib/program.js
+@@ -2,17 +2,17 @@ var program = require('commander');
+ var feedback = require('feedback');
+ 
+ module.exports = function (api, user, cwd) {
+-
++  
+   program.Command.prototype.example = function (str) {
+     if (!str) return this._example || '';
+-
++    
+     this._example = str;
+     return this;
+   };
+ 
+   program.Command.prototype.trigger = function (args) {
+     args || (args = []);
+-
++    
+     this.parent.emit(this._name, args);
+     return this;
+   };
+@@ -20,31 +20,28 @@ module.exports = function (api, user, cwd) {
+   program.Command.prototype.handler = function (callback) {
+     var self = this;
+     callback || (callback = function () {});
+-
++    
+     this.action(function () {
+-      if (this.token) {
+-        api.setToken(this.token);
+-        user.set('token', this.token);
+-      }
++      if (this.token) api.setToken(this.token);
+       if (this.rawArgs.indexOf('--no-color') > -1) feedback.color = false;
+-
++      
+       if (self._withAuth && !user.authenticated()) {
+         return feedback.error('You must be logged in to do that.');
+       }
+-
++      
+       if (self._withConfig) {
+         self.config = cwd.getConfig();
+         if (!self.config || !self.config.name) return feedback.error('Current directory is not a ' + 'Divshot.io'.blue + ' app');
+       }
+-
++      
+       if (this.app) {
+         self.config = self.config || {};
+         self.config.name = this.app;
+       }
+-
++      
+       callback.apply(self, arguments);
+     });
+-
++    
+     return this;
+   };
+ 
+@@ -57,6 +54,6 @@ module.exports = function (api, user, cwd) {
+     this._withConfig = true;
+     return this;
+   };
+-
++  
+   return program;
+ };
+\ No newline at end of file
